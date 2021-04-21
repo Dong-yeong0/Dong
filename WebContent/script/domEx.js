@@ -120,11 +120,18 @@ function saveBtnFnc() {
 //수정버튼
 function modifyBtnFnc() {
     var id = document.getElementById('id').value;
+    //사용자가 변경한 값을 반영
     var targetTr = document.getElementById(id);
     console.log(targetTr);
     targetTr.children[0].innerHTML = document.getElementById('name').value;
     targetTr.children[2].innerHTML = document.getElementById('score').value;
     targetTr.children[3].innerHTML = document.querySelector('input[name="gender"]:checked').value;
+
+    var targetTr = document.getElementById(id);
+    console.log(targetTr);
+    targetTr.children[0].innerHTML = '<a href = "dom.jsp?name' + name + '&id' + id + '&score' + score + '&gender' + gender + '">' + name + '</a>'
+    targetTr.children[2].innerHTML = score;
+    targetTr.children[3].innerHTML = gender;
 }
 // for (var person of persons) {
 //     var tr1 = document.createElement('tr');

@@ -6,6 +6,9 @@ public class Employee {
 	private String lastName;
 	private String email;
 	private int salary;
+	private String hireDate;
+	private String jobId;
+	
 	public int getEmployeeId() {
 		return employeeId;
 	}
@@ -35,6 +38,18 @@ public class Employee {
 	}
 	public void setSalary(int salary) {
 		this.salary = salary;
+	}
+	public String getHireDate() {
+		return hireDate;
+	}
+	public void setHireDate(String hireDate) {
+		this.hireDate = hireDate;
+	}
+	public String getJobId() {
+		return jobId;
+	}
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
 	}
 	
 	

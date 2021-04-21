@@ -17,22 +17,56 @@ public class EmpServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 //		super.doGet(req, resp);
 		PrintWriter out = resp.getWriter();
+		
+		String dept = req.getParameter("dept");
+		
 		EmpDAO dao = new EmpDAO();
-		List<Employee> list = dao.getEmpList();
+		List<Employee> list = null;
+		if(dept == null) {
+			list = dao.getEmpList();	
+		}else {
+			list = dao.getEmpByDept(dept);
+		}
+		
+		
 		String jsonData = "[";
 		// [{"empId" : "?", "fName":"?", "lName":"?"}, ... ]
 		int cnt = 0;
 		for(Employee emp : list) {
-			jsonData += ("{\"empId\":\""+emp.getEmployeeId()+"\","
-					+ "\"fName\":\""+emp.getFirstName()+"\","
-					+ "\"lName\":\""+emp.getLastName()+"\","
-					+ "\"email\":\""+emp.getEmail()+"\","
-					+ "\"salary\":\""+emp.getSalary()+"\"}");
+	         jsonData += "{\"empId\": \"" + emp.getEmployeeId() + "\",\"fName\": \"" + emp.getFirstName()//
+             + "\",\"lName\": \"" + emp.getLastName()//
+             + "\",\"lName\": \"" + emp.getEmail()//
+             + "\",\"lName\": \"" + emp.getSalary()//
+             + "\"}";
 			if(++cnt == list.size()) {
 				continue;
 			}
 			jsonData += ",";
 		}
 		jsonData += "]";
+		out.print(jsonData);
 	}
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String lastName = req.getParameter("last_name");
+		String email = req.getParameter("email");
+		String hireDate = req.getParameter("hire_date");
+		String jobId = req.getParameter("job_id");
+		
+		Employee emp = new Employee();
+		emp.setLastName(lastName);
+		emp.setEmail(email);
+		emp.setHireDate(hireDate);
+		emp.setJobId(jobId);
+		
+		EmpDAO dao = new EmpDAO();
+		dao.insertEmp(emp);
+		
+		resp.getWriter().print("<h1>Success</h1>");
+		
+	}
+	
 }
+
+
+
