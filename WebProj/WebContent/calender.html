@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var month = 5;
+        var today = new Date(2021, (month - 1), 1);
+        console.log(today.getDay());
+        var lastDay = new Date(2021, month, 0);
+        console.log(lastDay.getDate());
+        // console.log(lastDay.getDay());
+
+        var days = ['sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sta'];
+        var tbl = '<table border="1"><tr>';
+        for (day of days) {
+            tbl += '<th>' + day + '</th>';
+        }
+        tbl += '</tr>';
+        s
+        //tbl += '<td></td><td></td><td></td><td></td>';
+        for (var j = 1; j <= today.getDay(); j++) {
+            tbl += '<td></td>';
+        }
+        for (var i = 1; i <= lastDay.getDate(); i++) {
+            tbl += '<td>' + i + '</td>';
+            if (i % 7 == 0) {
+                tbl += '</td><td>';
+            }
+
+        }
+        tbl += '</tr>';
+        tbl += '</table>';
+
+        document.write(tbl);
+    </script>
+</body>
+
+</html>

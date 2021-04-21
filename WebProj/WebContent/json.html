@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>json.html</title>
+</head>
+
+<body>
+    <script>
+        var myObj = {
+            name: "John",
+            age: 31,
+            city: "New York"
+        };
+        //Json => JavaScript Object Notation
+        var jsonObj = '{"name" : "Jonh","age" : "31","city" : "New York"}';
+        //JSON => Object
+        var data = JSON.parse(jsonObj);
+        console.log(data);
+        var json = JSON.stringify(data);
+        console.log(json);
+
+        var strObj = "name:john,age:31,city:New Yotk";
+        var pos = strObj.indexOf('name');
+        var name = strObj.substring(5, 9);
+    </script>
+</body>
+
+</html>

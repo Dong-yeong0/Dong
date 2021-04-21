@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>variable.html</title>
+	<style>
+		td {
+			border: 2px solid white;
+			color: white;
+			background-color: black;
+		}
+
+		table {
+			border-collapse: collapse;
+			display: inline;
+			margin: 10px;
+			padding: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- <script src="script/obj.js"></script> -->
+	<!-- <script src="script/obj2.js"></script> -->
+	<script>
+		for (i = 2; i <= 9; i++) {
+			tbl = '<table>';
+			for (j = 1; j <= 9; j++) {
+				tbl += '<tr><td>' + i + 'x' + j + '</td><td>' + (i * j) + '</td></tr>';
+			}
+			tbl += '</table>';
+			document.write(tbl);
+		}
+	</script>
+</body>
+
+</html>

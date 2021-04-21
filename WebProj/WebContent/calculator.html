@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator.html</title>
+    <style>
+        div.container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 300px;
+            height: 350px;
+            background-color: gray;
+            justify-content: space-around;
+        }
+
+        .container>div {
+            background-color: white;
+            width: 50px;
+            height: 50px;
+            margin: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 10px;
+        }
+
+        .container>div:hover {
+            cursor: pointer;
+        }
+
+        div#display {
+            width: 190px;
+            padding-right: 10px;
+            text-align: right;
+        }
+
+        div.container>div:hover {
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id='display'>0</div>
+        <div>C</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>*</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div>/</div>
+        <div>7</div>
+        <div>8</div>
+        <div>9</div>
+        <div>%</div>
+        <div>0</div>
+        <div>+</div>
+        <div>-</div>
+        <div>=</div>
+    </div>
+
+    <script>
+        var dp = document.getElementById('display');
+        var btns = document.querySelectorAll('div.container>div');
+        console.log(btns);
+
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].onclick = clickEvent;
+        }
+
+        var firstVal = 0,
+            lastVal = 0,
+            oper = null;
+
+        function clickEvent() {
+            var touchVal = this.innerHTML;
+            // dp.innerHTML = parseInt(touchVal);
+
+            if (isNaN(touchVal)) { //isNaN = is Not a Number(숫자타입이 아님) / 문자(*,/,+,-,=)
+                if (touchVal == 'C') { // Clear 눌렀을때
+                    firstVal = 0,
+                        lastVal = 0,
+                        oper = null;
+                        result = 0;
+                } else if (touchVal != '=') { //연산자 눌렀을때
+                    oper = touchVal;
+                } else { // = 눌렀을때
+                    if (oper == '+') {
+                        result = (parseInt(firstVal) + parseInt(lastVal));
+                        dp.innerHTML = result;
+                    } else if (oper == '-') {
+                        result = (firstVal - lastVal);
+                        dp.innerHTML = result;
+                    } else if (oper == '*') {
+                        result = (firstVal * lastVal);
+                        dp.innerHTML = result;
+                    } else if (oper == '/') {
+                        result = (firstVal / lastVal);
+                        dp.innerHTML = result;
+                    } else if (oper == '%') {
+                        result = (firstVal % lastVal);
+                        dp.innerHTML = result;
+                    }
+                    firstVal = result;
+                    oper = null;
+                    lastVal = 0;
+                    return; //function 에서 return을 만나면 종료.
+                }
+            } else { //숫자
+                if (oper) {
+                    //lastVal
+                    lastVal += touchVal;
+                } else {
+                    //firstVal
+                    firstVal += touchVal;
+                }
+            }
+            dp.innerHTML = parseInt(firstVal) + oper + (lastVal == 0 ? '' : parseInt(lastVal));
+        }
+    </script>
+</body>
+
+</html>
