@@ -18,7 +18,7 @@
         //Json => JavaScript Object Notation
         var jsonObj = '{"name" : "Jonh","age" : "31","city" : "New York"}';
         //JSON => Object
-        var data = JSON.parse(jsonObj);
+        var data = JSON.parse(jsonObj); //자바스크립트 오브젝트 타입으로 변경
         console.log(data);
         var json = JSON.stringify(data);
         console.log(json);
@@ -26,6 +26,30 @@
         var strObj = "name:john,age:31,city:New Yotk";
         var pos = strObj.indexOf('name');
         var name = strObj.substring(5, 9);
+
+        // 서버에서 받아온 사원정보
+        var mockData =
+            '[{"id":1,"first_name":"Eustace","last_name":"Dwyr","email":"edwyr0@princeton.edu","gender":"Bigender","ip_address":"140.175.185.135"},{"id":19,"first_name":"Prudy","last_name":"Pellew","email":"ppellewi@photobucket.com","gender":"Genderqueer","ip_address":"163.132.3.47"},{"id":20,"first_name":"Niles","last_name":"Durak","email":"ndurakj@wordpress.org","gender":"Female","ip_address":"163.126.22.126"}]';
+        var mockObj = JSON.parse(mockData);
+
+        var table = document.createElement('table');
+        table.setAttribute('border','1');
+        var cap = document.createElement('caption');
+        cap.innerHTML = '사원리스트';
+        table.appendChild(cap);
+        for (var i = 0; i < mockObj.length; i++) {
+            var tr = document.createElement('tr');
+            for (field in mockObj[i]) {
+                var td = document.createElement('td');
+                var text = document.createTextNode(mockObj[i][field]);
+                td.appendChild(text);
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        document.body.appendChild(table);
+
+        console.log(mockObj);
     </script>
 </body>
 
