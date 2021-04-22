@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EmpDAO {
@@ -21,8 +22,8 @@ public class EmpDAO {
 		Employee emp1 = new Employee();
 		
 		String sql1 = "select employees_seq.nextval from dual";
-		String sql2 = "insert into emp_temp(employee_id, last_name, email, hire_date, job_id)"
-								+"values (?, ?, ?, ?, ?)";
+		String sql2 = "insert into emp_temp(employee_id, first_name, last_name, email, hire_date, job_id, salary, department_id)"
+								+"values (?, ?, ?, ?, ?, ?, ?, 50)";
 		try {
 			int empId = 0;
 			stmt = conn.createStatement();
@@ -31,19 +32,22 @@ public class EmpDAO {
 				empId = rs.getInt(1);
 				
 			}
-			
 			psmt = conn.prepareStatement(sql2);
 			psmt.setInt(1,empId);
-			psmt.setString(2, emp.getLastName());
-			psmt.setString(3, emp.getEmail());
-			psmt.setString(4, emp.getHireDate());
-			psmt.setString(5, emp.getJobId());
+			psmt.setString(2, emp.getFirstName());
+			psmt.setString(3, emp.getLastName());
+			psmt.setString(4, emp.getEmail());
+			psmt.setString(5, emp.getHireDate());
+			psmt.setString(6, emp.getJobId());
+			psmt.setInt(7, emp.getSalary());
 			int r = psmt.executeUpdate();
 			System.out.println(r+ "건 입력됨");	
 			
 			// 입력한 값을 반환해주기 위해서 emp1에 넣어줌
 			emp1.setEmployeeId(empId);
 			emp1.setEmail(emp.getEmail());
+			emp1.setFirstName(emp.getFirstName());
+			emp1.setSalary(emp.getSalary());
 			emp1.setLastName(emp.getLastName());
 			emp1.setHireDate(emp.getHireDate());
 			emp1.setJobId(emp.getJobId());
@@ -101,8 +105,9 @@ public class EmpDAO {
 						emp.setFirstName(rs.getString("first_name"));
 						emp.setLastName(rs.getString("last_name"));
 						emp.setEmail(rs.getString("email"));
+						emp.setJobId(rs.getString("job_id"));
+						emp.setHireDate(rs.getString("hire_date"));
 						emp.setSalary(rs.getInt("salary"));
-						
 						employees.add(emp);
 					}
 				} catch (SQLException e) {
@@ -148,6 +153,8 @@ public class EmpDAO {
 				emp.setFirstName(rs.getString("first_name"));
 				emp.setLastName(rs.getString("last_name"));
 				emp.setEmail(rs.getString("email"));
+				emp.setJobId(rs.getString("job_id"));
+				emp.setHireDate(rs.getString("hire_date"));
 				emp.setSalary(rs.getInt("salary"));
 				
 				employees.add(emp);
