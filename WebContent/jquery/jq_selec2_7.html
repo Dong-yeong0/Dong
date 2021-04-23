@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_selec2_7</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // 변수 : var, let(타이트한 var : 변수 중복선언 X), const(상수)
+        const num1 = {
+            name: 'Hong',
+            age: 10
+        }
+        const num2 = {
+            name: 'Hwang',
+            age: 15
+        }
+        const num3 = {
+            name: 'Park',
+            age: 20
+        }
+        const numbers = [num1, num2, num3];
+        //  배열의 수 만큼 반복
+        $(numbers).each(function (index, value) { // .each (index값, value값)
+            console.log(index, value);
+        });
+        console.log('=============================');
+        const names = $(numbers).map(function(index,value){ // return 가능 
+            console.log(index,value);
+            return value.name;
+        });
+        console.log('=============================');
+        console.log(names);
+
+        console.log('=============================');
+
+        const ages = $.grep(numbers, function(value,index){ //  true, false 값 반환
+            console.log(value,index);
+            return value.age == 15;  //  조건에 만족하는 배열만 반환
+        });
+        console.log('=============================');
+        console.log(ages);
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

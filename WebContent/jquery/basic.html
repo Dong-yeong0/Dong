@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery</title>
+    <style>
+        section#sec1>h1 {
+            background-color: aqua;
+        }
+
+        section.sec1>h1 {
+
+            background-color: gray;
+        }
+    </style>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () { //Document가 실행되면 function 실행
+            var sec1 = document.getElementById('sec1');
+            sec1 = $('#sec1');
+            console.log(sec1.children().eq(0).html());
+            // 자바스크립트 / 제이쿼리 p.170
+
+            // eq(n) : 하위요소의 index값 들고 올때
+            // children : 하위요소 들고 올때
+            // $('.sec1>ul').children().eq(1).css('color', 'red');
+            $('li').eq(0).parent().css('background-color', 'yellow');
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Apple</h1>
+    <section id='sec1'>
+        <h1>Banana</h1>
+        <ul>
+            <li>Yellow</li>
+            <li>Red</li>
+        </ul>
+    </section>
+    <section class="sec1">
+        <h1>Cheery</h1>
+        <ul>
+            <li>Yellow</li>
+            <li>Red</li>
+        </ul>
+    </section>
+</body>
+
+</html>
