@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jquery/each3.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({ // XMLHttpRequest(); xhtp.resulttext;
+                url: '../MOCK_DATA.json', //오픈하고 싶은 페이지 서버에 요청
+                dataType: 'json',
+                success: successCallFnc,
+                error: errorCallFnc
+            });
+        });
+
+        function successCallFnc(result) {
+            console.log(result);
+            let tbl = $('<table />');
+            tbl.attr('border', '1');
+            $.each(result, function (i, o) { // (index, object)
+                let trTag = $('<tr />'); // create row
+                trTag.attr('id', o.id);
+                trTag.mouseover(mouseoverFnc);
+                trTag.mouseout(mouseoutFnc);
+                let btn = $('<button />').html('Del');
+                btn.click((event) =>  {
+                    console.log($(this), event);
+                    //$(this) => function : event 대상, arrow fnc : object
+                    event.currentTarget.parentNode.parentNode.remove();
+                });
+                trTag.append(
+                    $('<td />').html(o.id), //
+                    $('<td />').html(o.first_name), //
+                    $('<td />').html(o.last_name), //
+                    $('<td />').html(o.email), //
+                    $('<td />').html(o.gender),
+                    $('<td />').append(btn)
+                );
+                tbl.append(trTag);
+            });
+            $('#show').html(tbl); //  <td>1</td> .. <td>20</td>
+        }
+
+        function mouseoverFnc() {
+            $(this).css({
+                'background-color': 'yellow'
+            })
+        }
+
+        function mouseoutFnc() {
+            $(this).css({
+                'background-color': 'pink'
+            })
+        }
+
+        function errorCallFnc(reject) {
+            console.log(reject);
+        }
+
+        function clickFnc() {
+            alert($(this).attr('id')); // click 할때 trTag의 값을 읽어옴
+        }
+    </script>
+
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+
+</html>
