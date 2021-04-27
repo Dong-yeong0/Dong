@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_event1_2.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <style>
+        .content {
+            background-color: black;
+            color: white;
+        }
+
+        span {
+            display: inline-block;
+            width: 70vw;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <p>
+        <button class="btn1">클릭1</button>
+    </p>
+    <p>내용1</p>
+    <p>
+        <button class="btn2">클릭2</button>
+    </p>
+    <p>내용2</p>
+
+    <input type="text" name="firstName" value="Kildong">
+    <input type="number" name="age" value="10"><br>
+    <button id="btn3">추가</button>
+    <p id="show"></p>
+
+    <script>
+        $('#btn3').click(function () {
+            let fName = $('input[type=text]').val();
+            let age = $('input[type=number]').val();
+            let btn = $('<button />').html("Del");
+            let span = $('<span />').html(fName + age);
+            btn.click(function () {
+                $(this).parent().remove();
+            });
+            $('p#show').append(
+                $('<div />').append(span)
+                .append(btn)
+            );
+
+            $('span').on({
+                mouseover: function () {
+                    $(this).css({
+                        'background-color': 'black',
+                        'color': 'white'
+                    });
+                },
+                mouseout: function () {
+                    $(this).css({
+                        'background-color': '',
+                        'color': ''
+                    });
+
+                }
+            });
+        });
+        $('.btn1').click(function () {
+            $('p:contains(내용1)').html('HELLO');
+        });
+
+        $('.btn2').on('click', function () {
+            let click = $(this).parent().next().css({
+                'color': 'white'
+            }).attr('id', 'content2').addClass('content');
+            console.log(click);
+        });
+
+        $('p:eq(1)').on({
+            mouseover: function () {
+                $(this).css({
+                    'background-color': 'aqua',
+                    'font-size': '30px'
+                })
+            },
+            mouseout: function () {
+                $(this).css({
+                    'background-color': '',
+                    'font-size': '15px'
+                })
+            }
+        });
+    </script>
+</body>
+
+</html>

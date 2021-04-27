@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_selec3_11.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            var copyObj = $('.box1').children().clone();
+            console.log(copyObj);
+
+            $('.box2').remove();
+
+            $('.box3').empty();
+            $('.box3').append(copyObj);
+
+            $('h2').replaceWith('<h3>replace method</h3>');
+            $('<p>Change</p>').replaceAll($('.box4'));
+        })
+    </script>
+</head>
+
+<body>
+    <div class="box1">
+        <p>내용1</p>
+        <p>내용2</p>
+    </div>
+    <div class="box2">
+        <p>내용3</p>
+        <p>내용4</p>
+    </div>
+    <div class="box3">
+        <p>내용5</p>
+        <p>내용6</p>
+    </div>
+
+    <section class="box4">
+        <h2>제목1</h2>
+        <div>내용1</div>
+        <div>내용2</div>
+    </section>
+
+    <section class="box5">
+        <h2>제목2</h2>
+        <div>내용3</div>
+        <div>내용4</div>
+    </section>
+</body>
+
+</html>
