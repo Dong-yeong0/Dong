@@ -3,7 +3,9 @@ package ajax;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,6 +27,31 @@ public class MemberServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// 조회작업.
 		response.setContentType("text/html;charset=UTF-8");
+
+		// 조회 sql
+		Connection conn = DBcon.getConnect();
+		Statement stmt;
+		ResultSet rs;
+		PreparedStatement psmt;
+		
+		String p1 = request.getParameter("m_id");
+		String p2 = request.getParameter("m_name");
+		String p3 = request.getParameter("m_age");
+		
+		String sql = "select * from member";
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		// 조회 결과를 json 형식으로 변환 [
+			// 							{"id":1,"name":"hong","age":20}
+			// 							{"id":1,"name":"hong","age":20}
+			// 							{"id":1,"name":"hong","age":20}]
+			
+		// 결과를 response.getWriter().print(); 출력
+
 		response.getWriter().print("<h2>정상적으로 조회되었습니다.</h2>");
 	}
 
