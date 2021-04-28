@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_event2_4.html</title>
+    <style>
+        #show {
+            background-color: gold;
+            width: 300px;
+            height: 200px;
+        }
+
+        .item {
+            width: 50px;
+            height: 30px;
+            display: inline-block;
+            background-color: aqua;
+            border: 1px dotted greenyellow;
+        }
+    </style>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            //  등록
+            $('#name').keypress(function (e) {
+                if (e.keyCode == 13) { // 13 : enter (enter가 눌러지면)
+                    let inputval = $(this).val(); //  그 값을 inputval에 넣음
+                    console.log(inputval);
+                    $('#show').append($('<div />').html(inputval).addClass('item'));
+                    $(this).val(''); // 입력 후 공란 만들기
+                }
+            });
+
+            //  제거
+            $('#eman').bind('keydown', function (e) {   // bind == on (이벤트)
+                if (e.keyCode == 13) {
+                    let iword = $(this).val();
+                    // $('#show div:contains(' + iword + ')').remove();    // contains : div태그 안의 문자가 포함
+                    let contents = $('#show').contents(); // id값이 show인 div를 가져온다
+                    for (let i = 0; i < contents.length; i++) {
+                        if (contents[i].innerHTML == iword) {
+                            contents[i].remove();
+                        }
+                    }
+                    $(this).val('');
+                }
+            })
+            $('#name').focus();
+        })
+    </script>
+</head>
+
+<body>
+    <input type="text" name="name" id="name">
+    <div id="show"></div>
+    <input type="text" name="eman" id="eman">
+</body>
+
+</html>

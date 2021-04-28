@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>jq_ajax1.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            $('#show').load('jq_selec2_1.html',    // url       load(url,[data],[complete]) 외부 콘텐츠 가져올때 사용
+                function (a,b,c) { 
+                    console.log(a,b,c);
+                });
+        })
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+
+</html>

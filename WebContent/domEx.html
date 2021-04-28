@@ -2,84 +2,91 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>domEx.html</title>
-    <script src="script/domEx.js"></script>
-    <script>
-        console.log(1);
-        document.addEventListener('DOMContentLoaded', function () {
-            // 페이지 로딩 시 회원리스트 
-            // 타이틀과 데이터 처리 / table, tr ,td
-            cretaeTitle('이름', '아이디', '점수', '성별', '기능');
-            createData();
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>domEx.html</title>
+<script src="script/domEx.js"></script>
+<script>
+	console.log(1);
+	document.addEventListener('DOMContentLoaded', function() {
+		// 페이지 로딩 시 회원리스트 
+		// 타이틀과 데이터 처리 / table, tr ,td
+		cretaeTitle('이름', '아이디', '점수', '성별', '기능');
+		createData();
 
-            // 저장버튼 클릭시
-            var saveBtn = document.getElementById('saveBtn');
-            saveBtn.addEventListener('click', saveBtnFnc); //사용자 생성 Function
+		// 저장버튼 클릭시
+		var saveBtn = document.getElementById('saveBtn');
+		saveBtn.addEventListener('click', saveBtnFnc); //사용자 생성 Function
 
-            // 수정버튼 클릭시
-            var modifyBtn = document.getElementById('modifyBtn');
-            modifyBtn.addEventListener('click', modifyBtnFnc);
-        });
-    </script>
+		// 수정버튼 클릭시
+		var modifyBtn = document.getElementById('modifyBtn');
+		modifyBtn.addEventListener('click', modifyBtnFnc);
+	});
+</script>
 </head>
 
 <body>
 	<div>
-        <div>이름 : <input type="text" name="name" id="name" value="Kim"></div>
-        <div>아이디 : <input type="text" name="id" id="id" value="user5"></div>
-        <div>점수 : <input type="text" name="score" id="score" value="99"></div>
-        <div>
-            <label>성별 : <input type="radio" name="gender" value="남" checked>남성</label>
-            <label><input type="radio" name="gender" value="여">여성</label>
-        </div>
-        <div>
-            <button id="saveBtn">저장</button>
-            <button id="modifyBtn">수정</button>
-        </div>
-    </div>
-    <hr size="2px" color="black">
-    <!-- <script>
+		<div>
+			이름 : <input type="text" name="name" id="name" value="Kim">
+		</div>
+		<div>
+			아이디 : <input type="text" name="id" id="id" value="user5">
+		</div>
+		<div>
+			점수 : <input type="text" name="score" id="score" value="99">
+		</div>
+		<div>
+			<label>성별 : <input type="radio" name="gender" value="남"
+				checked>남성
+			</label> <label><input type="radio" name="gender" value="여">여성</label>
+		</div>
+		<div>
+			<button id="saveBtn">저장</button>
+			<button id="modifyBtn">수정</button>
+		</div>
+	</div>
+	<hr size="2px" color="black">
+	<!-- <script>
         var saveBtn = document.getElementById('saveBtn');
         console.log(saveBtn);
     </script> -->
-    <table id="tbl" border="1">
-        <caption>회원리스트</caption>
-    </table>
-    <script>
-        console.log(3);
-        var tbl = document.getElementById('tbl');
-        console.log(tbl);
-        var p1 = {
-            name: 'Hong',
-            id: 'user1',
-            score: 80,
-            gender: '남'
-        }
-        var p2 = {
-            name: 'Hwang',
-            id: 'user2',
-            score: 84,
-            gender: '남'
-        }
-        var p3 = {
-            name: 'Park',
-            id: 'user3',
-            score: 86,
-            gender: '여'
-        }
-        var p4 = {
-            name: 'Choi',
-            id: 'user4',
-            score: 82,
-            gender: '여'
-        }
-        var persons = [p1, p2, p3, p4];
+	<table id="tbl" border="1">
+		<caption>회원리스트</caption>
+	</table>
+	<script>
+		console.log(3);
+		var tbl = document.getElementById('tbl');
+		console.log(tbl);
+		var p1 = {
+			name : 'Hong',
+			id : 'user1',
+			score : 80,
+			gender : '남'
+		}
+		var p2 = {
+			name : 'Hwang',
+			id : 'user2',
+			score : 84,
+			gender : '남'
+		}
+		var p3 = {
+			name : 'Park',
+			id : 'user3',
+			score : 86,
+			gender : '여'
+		}
+		var p4 = {
+			name : 'Choi',
+			id : 'user4',
+			score : 82,
+			gender : '여'
+		}
+		var persons = [ p1, p2, p3, p4 ];
 
-        var tbl = document.getElementById('tbl');
-    </script>
+		var tbl = document.getElementById('tbl');
+	</script>
 </body>
 
 </html>
