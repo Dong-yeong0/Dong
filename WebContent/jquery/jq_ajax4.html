@@ -2,36 +2,111 @@
 <html lang="ko">
 
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>jq_ajax4.html</title>
-<script src="../js/jquery-3.6.0.min.js"></script>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>jq_ajax4.html</title>
+	<script src="../js/jquery-3.6.0.min.js"></script>
 
-<script>
-	$(document).ready(function() {
-		$.ajax({
-			url: '../ajax.html',
-			type: 'get', //post
-			data: 'p1=hello&p2=nice',
-			dataType: 'html',
-			success: function(resolve){
-				console.log(resolve);
-			},
-			error: function(reject){
-				window.alert(reject.statusText);
-				console.log('에러코드 : ${reject.status}, 에러메세지 : ${reject.statusText}');
-			}
+	<script>
+		$(document).ready(function () {
+			// 현재 DB의 회원 리스트 가져오기
+			$.ajax({
+				url: 'memberServlet.do',
+				type: 'get', //post
+				//data: 'p1=hello&p2=nice',
+				dataType: 'json',
+				success: showList,
+				error: function (reject) {
+					window.alert(reject.statusText);
+					console.log('에러코드 : ${reject.status}, 에러메세지 : ${reject.statusText}');
+				}
+			})
+			// 한건 입력작업 Ajax
+			$('#frm').on('submit', function (e) {
+				e.preventDefault(); //	submit 기능 취소 / ServletPage 이동 (X)
+				$.ajax({
+					url: $('#frm').attr('action'), // 'memberServlet.do'
+					data: 'm_id=' + $('#m_id').val() + '&m_name=' + $('#m_name').val() + '&m_age=' +
+						$('#m_age').val(), // Key=val& key2=val2& ...//
+					dataType: 'json',
+					type: 'post',
+					success: createRow,
+					error: function (err) {
+						console.log(err);
+					}
+				});
+			})
 		})
-	})
-</script>
+
+		function showList(resolve) {
+			console.log(resolve);
+			let $table = $('<table id="tbl"/>').attr('border', '1');
+			//	Title
+			let title = $('<tr />');
+			let title_id = $('<th />').html('ID');
+			let title_Name = $('<th />').html('Name');
+			let title_Age = $('<th />').html('Age');
+			let title_btn = $('<th />').html('기능')
+			title.append(title_id, title_Name, title_Age, title_btn);
+			$table.append(title);
+			//	Field 값
+			for (let i = 0; i < resolve.length; i++) {
+				let $tr = $('<tr />');
+				let btn = $('<button />').html('삭제');
+				let $td_id = $('<td />').html(resolve[i].Id);
+				let $td_name = $('<td />').html(resolve[i].Name);
+				let $td_age = $('<td />').html(resolve[i].Age);
+				let $td_btn = $('<td />').append(btn);
+				btn.click(delRow);
+				$tr.append($td_id, $td_name, $td_age, $td_btn);
+				$table.append($tr);
+			}
+			$('#show').append($table);
+		}
+
+		function createRow(data) {
+			console.log(data);
+			//	신규 입력된 데이터를 테이블에 추가해서 보여주기.
+			let btn = $('<button />').html('삭제');
+			btn.click(delRow);
+			let tr = $('<tr />').append(
+				$('<td />').html(data.id),
+				$('<td />').html(data.name),
+				$('<td />').html(data.age),
+				$('<td />').append(btn)
+			);
+
+			$('#tbl').append(tr);
+		}
+
+		function delRow() {
+			// Ajax 호출
+			console.log(this); //this => button
+			let id = $(this).parent().parent().children().eq(0).html();
+			let delTr = $(this).parent().parent();
+			// db에서 삭제
+			$.ajax({
+				url: '../MemberDelServlet',
+				data: 'mid=' + id,
+				success: function () {
+					// 화면삭제.
+					delTr.remove();
+					
+				},
+				error: function () {
+
+				}
+			});
+		}
+	</script>
 </head>
 
 <body>
-	<form action="memberServlet.do" method="post">
-		ID : <input type="number" name="m_id" id="m_id" value=1/><br>
-		이름 : <input type="text" name="m_name" id="m_name"  value='hong'/><br>
-		나이 : <input type="number" name="m_age" id="m_age" value=20/><br>
+	<form id="frm" action="memberServlet.do" method="post">
+		ID : <input type="number" name="m_id" id="m_id" value=1 /><br>
+		이름 : <input type="text" name="m_name" id="m_name" value='hong' /><br>
+		나이 : <input type="number" name="m_age" id="m_age" value=20 /><br>
 		<input type="submit" value="저장">
 		<input type="reset" value="취소">
 	</form>
