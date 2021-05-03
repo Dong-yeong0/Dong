@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,31 @@ public class EmpDAO {
 	ResultSet rs;
 	PreparedStatement psmt;
 
+	public void close() {
+		if (rs != null)
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		if(psmt != null) {
+			try {
+				psmt.close();
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+		if (conn != null)
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	
 	public Employee insertEmpBySeq(Employee emp) {
 		conn = DBcon.getConnect();
 
@@ -75,21 +99,8 @@ public class EmpDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if (psmt != null)
-				try {
-					psmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
-
 	}
 
 	public List<Employee> getEmpByDept(String dept) {
@@ -115,27 +126,7 @@ public class EmpDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if (rs != null)
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			if (conn != null)
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			close();
 		}
 		return employees;
 	}
@@ -164,27 +155,7 @@ public class EmpDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if (rs != null)
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			if (conn != null)
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			close();
 		}
 
 		return employees;
@@ -215,29 +186,8 @@ public class EmpDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			if (rs != null)
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			if (conn != null)
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			close();
 		}
-
 		return employees;
 	}// getEmployeeList()
 
@@ -260,31 +210,67 @@ public class EmpDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			if(rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if(psmt != null) {
-				try {
-					psmt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			if(conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			close();
 		}
 		return map;
+	}
+	
+	// 스케줄 정보를 가지고 오는 메소드.
+	public List<ScheduleVO> getScheduleList(){
+		String sql = "select * from schedule";
+		conn = DBcon.getConnect();
+		List<ScheduleVO> list = new ArrayList<ScheduleVO>();
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				ScheduleVO vo = new ScheduleVO();
+				vo.setTitle(rs.getString("title"));
+				vo.setStartDay(rs.getString("start_day"));
+				vo.setEndDay(rs.getString("end_day"));
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if(rs != null) {
+				close();
+			}
+		}
+		return list;
+	}
+	// 한건 입력.
+	public void insertSchedule(ScheduleVO vo) {
+		String sql = "insert into schedule values(?,?,?)";
+		conn = DBcon.getConnect();
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getTitle());
+			psmt.setString(2, vo.getStartDay());
+			psmt.setString(3, vo.getEndDay());
+			int n = psmt.executeUpdate();
+			System.out.println(n + "건 입력되었습니다.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+	}
+	//한건 삭제
+	public void delSchedule(ScheduleVO vo) {
+		String sql = "delete from schedule where title = ?";
+		conn = DBcon.getConnect();
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, vo.getTitle());
+			int n = psmt.executeUpdate();
+			System.out.println(n + "건 삭제되었습니다.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
 	}
 }
