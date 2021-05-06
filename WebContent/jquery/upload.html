@@ -10,35 +10,42 @@
 			width: 180px;
 			margin: auto;
 		}
+
+		#show {
+			padding-top: 15px;
+		}
 	</style>
 	<script src="../js/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document).ready(function () {
+			let table = $('<table />').attr('border', '1');
 			// DB에 있는 데이터를 화면에 출력 ... <div> <table> </table></div>
 			$.ajax({
 				url: '../getFileListServlet',
 				dataType: 'json', // json => Object 변환
 				success: function (result) {
-					let table = $('<table />').attr('border', '1');
-					// Table Title
-					let t_title = $('<tr />');
-					let num = $('<th />').html('번호');
-					let author = $('<th />').html('번호');
-					let title1 = $('<th />').html('제목');
-					let days = $('<th />').html('날짜');
-					let fileN = $('<th />').html('파일이름');
-					t_title.append(num, author, title1, days, fileN);
-					table.append(t_title);
+					// Table title 생성
+					table.append(getTitle());
 					// Table 활용해서 리스트 출력
 					for (let i = 0; i < result.length; i++) {
+						let alink = $('<a />').attr('href', '#').html(result[i].title);
 						let tr = $('<tr />');
-						let td_num = $('<td />').html(result[i].num);
-						let td_at = $('<td />').html(result[i].author);
-						let td_tt = $('<td />').html(result[i].title);
-						let td_day = $('<td />').html(result[i].day);
-						let td_file = $('<td />').html(result[i].fileName);
+						alink.click(linkClickCallBack);
+						tr.click(function () {
+							console.log('tr클릭');
+						});
+						// 버튼생성
+						let btn = $('<td />').append($('<button />').html('삭제'));
+						btn.click(delClick);
+						tr.append(
+							$('<td />').html(result[i].num),
+							$('<td />').append(alink),
+							$('<td />').html(result[i].author),
+							$('<td />').html(result[i].day),
+							$('<td />').html(result[i].fileName),
+							btn
+						);
 
-						tr.append(td_num, td_at, td_tt, td_day, td_file);
 						table.append(tr);
 					}
 					$('#show').append(table);
@@ -48,6 +55,66 @@
 				}
 			});
 
+			// Link 클릭했을 때 callBack 함수
+			function linkClickCallBack(e) {
+				console.log('a클릭', $(this).parentsUntil('table').eq(1).children().eq(0).html());
+				let num = $(this).parent().parent().children().eq(0).html();
+				num = $(this) // a태그
+					.parent() // td태그
+					.prev() // <td>num</td>
+					.html(); //
+				e.preventDefault(); // default 기능 차단.
+				e.stopPropagation(); // alink 실행만 뜬다 (tr태그랑 같이 안찍힘), 이벤트 전파 차단
+				$.ajax({
+					url: '../getFileServlet', // 호출 할 페이지(서블릿)
+					data: 'num=' + num,
+					dataType: 'json',
+					type: 'get', // select는 get이 좋고 insert, update 는 post 매개값을 넘겨줄때는.
+					success: function (result) {
+						console.log(result);
+						// 화면에 가져온 정보를 보여주도록
+						$('#num').val(result.num);
+						$('#author').val(result.author);
+						$('#title').val(result.title);
+						$('#img').attr('src', '../upload/' + result.fileName);
+					},
+					error: function (reject) {
+						console.log(reject);
+					}
+				});
+			}
+
+			// 테이블의 타이틀
+			function getTitle() {
+				let $title = $('<tr />');
+				$title.append(
+					$('<th />').html('번호'),
+					$('<th />').html('제목'),
+					$('<th />').html('저자'),
+					$('<th />').html('날짜'),
+					$('<th />').html('파일이름'),
+					$('<th />').html('삭제'),
+				);
+				return $title;
+			}
+
+			// 삭제 기능
+			function delClick(e) {
+				console.log($(this).parent().children().eq(0).html());
+				let num = $(this).parent().children().eq(0).html();
+				let del = $(this).parent();
+				$.ajax({
+					url: '../getFileDelServlet',
+					data: 'num=' + num,
+					success: function (result) {
+						del.remove();
+						window.alert('삭제되었습니다');
+					},
+					error: function (err) {
+						console.log(err);
+					}
+				});
+			}
 
 			// 파일을 선택하면 이미지가 나타나도록
 			$('#filename').change(function () {
@@ -72,8 +139,27 @@
 					type: 'post',
 					dataType: 'json',
 					data: data,
-					success: function (result) {	
+					success: function (result) {
 						console.log(result);
+						// Create Table
+						let alink = $('<a />').attr('href', '#').html(result.title);
+						let tr = $('<tr />');
+						alink.click(linkClickCallBack);
+						tr.click(function () {
+							console.log('tr클릭');
+						});
+						let btn = $('<td />').append($('<button />').html('삭제'));
+						btn.click(delClick);
+						tr.append(
+							$('<td />').html(result.num),
+							$('<td />').append(alink),
+							$('<td />').html(result.author),
+							$('<td />').html(result.day),
+							$('<td />').html(result.fileName),
+							btn
+						)
+						table.append(tr);
+						$('#show').append(table);
 					},
 					error: function (err) {
 						console.log(err);

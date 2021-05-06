@@ -14,6 +14,48 @@ public class FileDAO {
 	PreparedStatement psmt;
 	ResultSet rs;
 	
+	// DB삭제
+	public void delFile(FileVO vo) {
+		conn = DBcon.getConnect();
+		String sql = "delete from file_board where num = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, vo.getNum());
+			int n = psmt.executeUpdate();
+			System.out.println(n + "건 삭제됨");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+	
+	// 한건 조회
+	public FileVO getFile(int num) { // num 값으로 한건 조회.
+		conn = DBcon.getConnect();
+		FileVO file = new FileVO();
+		String sql = "select * from file_board where num = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, num);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				file.setNum(rs.getInt("num"));
+				file.setAuthor(rs.getString("author"));
+				file.setDay(rs.getString("day"));
+				file.setTitle(rs.getString("title"));
+				file.setFileName(rs.getString("file_name"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		
+		return file;
+	}
+	
 	public List<FileVO> getFileList(){
 		conn = DBcon.getConnect();
 		List<FileVO> list = new ArrayList<FileVO>();
