@@ -166,6 +166,33 @@
 					}
 				});
 			});
+
+			// 수정버튼 클릭이벤트.
+			$('#modifyBtn').click(function (e) {
+				e.preventDefault();
+				let frm = document.getElementById('frm');
+				let data = new FormData(frm); // key value 값 담겨진다
+
+				// ajax 호출
+				$.ajax({
+					contentType: false,
+					processData: false,
+					url: '../fileModifyServlet',
+					data: data,
+					type: 'post',
+					dataType: 'json',
+					success: function (result) {
+						if(result.retCode == "Success"){
+							window.alert("정상 수정 되었습니다.");
+						}else{
+							window.alert("수정 예외가 발생했습니다.");
+						}
+					},
+					error: function (err) { // 404 Error
+						console.log(err);
+					}
+				});
+			});
 		});
 	</script>
 </head>
@@ -193,8 +220,9 @@
 			</tr>
 			<tr>
 				<td colspan="3">
-					<input type="submit" value="저장">
-					<input type="reset" value="취소">
+					<input type="submit" value="Submit">
+					<input type="reset" value="Reset">
+					<button id="modifyBtn"> 수정</button>
 				</td>
 			</tr>
 		</table>
